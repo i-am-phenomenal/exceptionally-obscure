@@ -2,7 +2,9 @@
 
 import React, {Component} from "react";
 import ReactDOM from 'react-dom';
-
+import {BrowserRouter as Router, Route, Redirect} from "react-router-dom";
+import DummyPage from './dummyPage';
+import AppRouter from './router';
 class App extends Component {
     state = { value: 0,
              array: [1,2,3,4,5],
@@ -27,7 +29,8 @@ class App extends Component {
              updatedTodoValue: "",
              userName: "",
              password: "",
-             registeredUsers: []
+             registeredUsers: [],
+             userToBeDeleted: ""
             }
 
     renderCurrentUserArea() {
@@ -49,12 +52,41 @@ class App extends Component {
         }
     }
 
+    componentDidMount() {
+      this.makeRequest()
+    }
+
+    navigateToPage = event => {
+      return <AppRouter />
+    }
+
     handleUserName = event => {
         this.setState({userName: event.target.value});
     }
 
     handlePassword = event => {
         this.setState({password: event.target.value})
+    }
+
+    handleUserToBeDeleted = event => {
+      this.setState({userToBeDeleted: event.target.value});
+    }
+
+    makeDeleteRequest = event => {
+      let localhostUrl = 'http://localhost:5454/posts/'
+      let userToBeDeleted = this.state.userToBeDeleted.toString()
+      let filteredUser = this.state.registeredUsers.filter(function(userObject){
+         return userObject.title == userToBeDeleted
+      })
+      let filteredUserObjectId = filteredUser[0].id.toString()
+
+      let completeUrl = localhostUrl + filteredUserObjectId
+      fetch(completeUrl, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
     }
 
     submitForm = event => {
@@ -71,10 +103,6 @@ class App extends Component {
         body: jsonDummyData
       })
       .then(res => res.json())
-        // var request = new XMLHttpRequest();
-        //
-        // request.open('POST', 'http://localhost:5454/posts', true);
-        // request.send(jsonDummyData);
     }
 
     renderWinnerArea() {
@@ -290,13 +318,16 @@ class App extends Component {
         this.setState({userChoice: 6});
     }
 
+    renderDeleteRequestArea = event => {
+      this.setState({userChoice: 7})
+    }
+
     modifyArray = event => {
         const arr = this.state.array
         const updatedArray = arr.map((arrayValue) =>
             <li> {arrayValue * 2} </li>
         );
         return updatedArray
-//        this.setState({array: a})
 
     }
 
@@ -312,6 +343,8 @@ class App extends Component {
         this.setState({currentTodo: event.target.value});
     }
 
+
+
     addTodo = event => {
         let todoList = this.state.todoList
         let currentTodo = this.state.currentTodo
@@ -324,11 +357,7 @@ class App extends Component {
             return todo != todoItem
         }))})
     }
-//        let todoList = this.state.todoList
-//        this.setState({todoList: todoList.filtodoupdateTodoItem = (todoItem) => {
-//        this.setState({todoItemToBeUpdated: todoItem})
-//    }
-//    }
+
 
     renderEditableTodoComponent = (todoItem) => {
         let todoList = this.state.todoList
@@ -370,10 +399,12 @@ class App extends Component {
         fetch('http://localhost:5454/posts'
         )
         .then(resp => resp.json())
-        .then(data => this.setState({registeredUsers: registeredUsers.concat([data])}))
-        .then(data => console.log(data, "dataDATAData"))
-        let users = this.state.registeredUsers
-        console.log(users, "-0000000000000")
+        .then(data => this.setState({registeredUsers: data}))
+
+    }
+
+    handleNavigationChoice = event => {
+      this.setState({userChoice: 8})
     }
 
     renderhtmlForUserChoice(){
@@ -409,7 +440,7 @@ class App extends Component {
                 </div>
             )
 
-        } else if (this.state.userChoice == -10 || this.state.userChoice > 6) {
+        } else if (this.state.userChoice == -10 || this.state.userChoice > 8) {
             return (<p> </p>)
 
         } else if (this.state.userChoice == 3) {
@@ -539,6 +570,24 @@ class App extends Component {
                     <input type = "button" value = "Submit" onClick = {this.submitForm} />
                 </div>
             )
+        } else if (this.state.userChoice == 7) {
+          return (
+            <div>
+             <br />
+             {" "}
+              <input type = "text" value = {this.state.userToBeDeleted} onChange = {this.handleUserToBeDeleted} />
+              {" "}
+              <br />
+              <input type = "button" value = "Delete" onClick = {this.makeDeleteRequest} />
+             </div>
+
+          )
+        } else if (this.state.userChoice == 8) {
+          return (
+            <div>
+                {this.navigateToPage()}
+            </div>
+          )
         }
     }
     render() {
@@ -583,10 +632,21 @@ class App extends Component {
                  value = "Open Form"
                  onClick = {this.renderForm} />
             {" "}
+                <input
+                  type = "button"
+                  value = "Navigate"
+                  onClick = {this.handleNavigationChoice} />
+            {" "}
              <input
                 type = "button"
                 value = "Refresh screen"
                 onClick = {this.refreshScreen} />
+
+            {" "}
+              <input
+                type = "button"
+                value = "Make Delete Request"
+                onClick = {this.renderDeleteRequestArea} />
             </div>
 
             <div>
