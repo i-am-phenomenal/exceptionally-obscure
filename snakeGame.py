@@ -100,67 +100,44 @@ def check_if_game_is_paused():
         pause_message.write("Press escape to pause and any arrow key to resume", align="center", font = ("Courier", 12, "normal"))
 
 
-# def updateSnake():
-    # global xCordForFood, yCordForFood, snakeFood, snakeBody, score, highScore, pen
-    # snakeXCord = snakeHead.xcor()
-    # snakeYCord = snakeHead.ycor()
-    # if snakeHead.distance(snakeFood) < 20:
+def move():
+    global xCordForFood, yCordForFood
+    getXCordForFood()
+    getYCordForFood()
+    # if snakeHead.direction is not "stop":
     #     getXCordForFood()
     #     getYCordForFood()
+    #     snakeFood.showturtle()
+    #     snakeFood.speed(0)
+    #     snakeFood.shape("circle")
+    #     snakeFood.penup()
     #     snakeFood.goto(xCordForFood, yCordForFood)
-    #     body = turtle.Turtle()
-    #     body.shape("square")
-    #     body.color("blue")
-    #     body.speed(0)
-    #     body.penup()
-    #     snakeBody.append(body)
-    #
-    #
-    #
-    # for index in range(len(snakeBody)-1, 0,-1):
-    #         x = snakeBody[index - 1].xcor()
-    #         y = snakeBody[index - 1].ycor()
-    #         snakeBody[index].goto(x,y)
-    #
-    # if len(snakeBody) > 0:
-    #         x = snakeHead.xcor()
-    #         y = snakeHead.ycor()
-            # snakeBody[0].goto(x, y)
+        # getSnakeFood(xCordForFood, yCordForFood)
+        # snakeFood.showturtle()
 
-
-
-#    if snakeHead.xcor() > 290 or snakeHead.xcor() < -290 or snakeHead.ycor() > 290 or snakeHead.ycor() < -290:
-#        snakeHead.goto(0,0)
-#        snakeHead.direction = "stop"
-#        snakeBody = []
-#        window.clear()
-#        window.bgcolor("grey")
-#        snakeHead.hideturtle()
-#        window.title("Snake Game")
-#        pen.clear()
-#        window.tracer(0)
-
-def move():
     if snakeHead.direction == "up":
-
+        snakeFood.showturtle()
         yCord = snakeHead.ycor()
         snakeHead.sety(yCord + 10)
         if snakeHead.ycor() >= 300:
            snakeHead.sety(-300)
 
     if snakeHead.direction == "down":
+        snakeFood.showturtle()
         yCord = snakeHead.ycor()
         snakeHead.sety(yCord - 10)
         if snakeHead.ycor() <= -300:
            snakeHead.sety(300)
 
     if snakeHead.direction == "left":
+        snakeFood.showturtle()
         xCord = snakeHead.xcor()
         snakeHead.setx(xCord - 10)
         if snakeHead.xcor() <= -300:
            snakeHead.setx(300)
 
     if snakeHead.direction == "right":
+        snakeFood.showturtle()
         xCord = snakeHead.xcor()
         snakeHead.setx(xCord + 10)
         if snakeHead.xcor() >= 300:
@@ -228,21 +205,34 @@ while True:
         body.penup()
         snakeBody.append(body)
 
+
+    if snakeHead.xcor() > 290 or snakeHead.xcor() < -290 or snakeHead.ycor() > 290 or snakeHead.ycor() < -290:
+        snakeHead.reset()
+        snakeHead.penup()
+        snakeHead.direction = "stop"
+        snakeFood.reset()
+        snakeFood.penup()
+        snakeFood.hideturtle()
+        for ele in snakeBody:
+            ele.hideturtle()
+
+    if snakeHead.direction == "stop":
+        snakeBody.clear()
+
     for index in range((len(snakeBody)-1), 0, -1):
             x = snakeBody[index - 1].xcor()
             y = snakeBody[index - 1].ycor()
             snakeBody[index].goto(x,y)
 
-    if len(snakeBody) > 0:
+    if len(snakeBody) > 0: #and snakeHead.direction is not "stop":
             x = snakeHead.xcor()
             y = snakeHead.ycor()
             snakeBody[0].goto(x, y)
 
 
-#    if snakeHead.xcor() > 290 or snakeHead.xcor() < -290 or snakeHead.ycor() > 290 or snakeHead.ycor() < -290:
-#        snakeHead.goto(0,0)
-#        snakeHead.direction = "stop"
-#        snakeBody = []
+        # snakeHead.goto(0,0)
+        # snakeHead.direction = "stop"
+        # snakeBody = []
         # window.clear()
         # window.bgcolor("grey")
         # snakeHead.hideturtle()
@@ -258,28 +248,19 @@ while True:
 
     check_if_game_is_paused()
     pen = getScore(score)
-    
-    if len(snakeBody) >= 4:
-        for iter in range(int((len(snakeBody)/2)), len(snakeBody)):
-            if snakeBody[iter].distance(snakeHead) < 20:
-                time.sleep(1)
-                snakeHead.goto(0, 0)
-                snakeHead.direction = "stop"
-                snakeBody.clear()
 
-    
 
-#    for element in snakeBody:
-#         if element.distance(snakeHead) < 20:
-#             time.sleep(1)
-#             snakeHead.goto(0, 0)
-#             snakeHead.direction = "stop"
-#    
-#             for body in snakeBody:
-#                 print(" I am here")
-#                 body.goto(1000, 1000)
-#    
-#             snakeBody.clear()
+    # for element in snakeBody:
+    #     if element.distance(snakeHead) < 20:
+    #         time.sleep(1)
+    #         snakeHead.goto(0, 0)
+    #         snakeHead.direction = "stop"
+    #
+    #         for body in snakeBody:
+    #             print(" I am here")
+    #             body.goto(1000, 1000)
+    #
+    #         snakeBody.clear()
 
 
     time.sleep(delay)
