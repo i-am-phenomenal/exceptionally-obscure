@@ -1,4 +1,3 @@
-    
 import turtle
 import time
 import random
@@ -104,16 +103,6 @@ def move():
     global xCordForFood, yCordForFood
     getXCordForFood()
     getYCordForFood()
-    # if snakeHead.direction is not "stop":
-    #     getXCordForFood()
-    #     getYCordForFood()
-    #     snakeFood.showturtle()
-    #     snakeFood.speed(0)
-    #     snakeFood.shape("circle")
-    #     snakeFood.penup()
-    #     snakeFood.goto(xCordForFood, yCordForFood)
-        # getSnakeFood(xCordForFood, yCordForFood)
-        # snakeFood.showturtle()
 
     if snakeHead.direction == "up":
         snakeFood.showturtle()
