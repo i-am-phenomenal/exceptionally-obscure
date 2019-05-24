@@ -103,9 +103,17 @@ def exit_game():
         shouldNotExit = False
 
 
-def play_background_theme():
-    playsound("C:/practice Programs/MarioTheme.mp3.mp3", winsound.SND_ALIAS)
-    # winsound.Playsound("")
+def get_mouse_coordinates(mouseObject):
+    rightPaddle.sety(mouseObject.y)
+    if rightPaddle.xcor() > 350 or rightPaddle.xcor() < 350:
+        rightPaddle.setx(350)
+
+    if rightPaddle.ycor() > 290:
+        rightPaddle.sety(290)
+
+    if rightPaddle.ycor() < -290:
+        rightPaddle.sety(-290)
+    print(mouseObject.y)
 
 
 window.listen()
@@ -114,13 +122,12 @@ window.onkeypress(move_right_paddle_down, "Down")
 window.onkeypress(move_left_paddle_up, "w")
 window.onkeypress(move_left_paddle_down, "s")
 window.onkey(exit_game, "P")
+window.onclick(get_mouse_coordinates)
 
 
 while shouldNotExit:
     window.update()
 
-    # soundThread = Thread(target=play_background_theme)
-    # soundThread.start()
     # Move the ball
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
@@ -177,3 +184,6 @@ while shouldNotExit:
         winsound.MessageBeep(winsound.MB_OK)
         ball.setx(-340)
         ball.dx *= -1
+
+    canvas = turtle.getcanvas()
+    canvas.bind("<Motion>", get_mouse_coordinates)
