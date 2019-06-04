@@ -913,6 +913,7 @@ import React from 'react'
 // import HomePage from './router'
 import Button from 'react-bootstrap/Button';
 import ButtonToolbar from 'react-bootstrap/ButtonToolbar';
+import scrollClass from './App.css';
 
 class App extends React.Component {
   constructor(props) {
@@ -920,7 +921,7 @@ class App extends React.Component {
   }
 
   state = {
-    isEditorVisible: false,
+    pageContent: "main-page",
     typesOfJoins: [
       "(INNER) JOIN: Returns records that have matching values in both tables",
       "LEFT (OUTER) JOIN: Returns all records from the left table and the matched records from the right table",
@@ -931,14 +932,23 @@ class App extends React.Component {
     expectedAnswer2: "Customers.CustomerID",
     answer1Input: "",
     answer2Input: "",
+    isAnswerCorrect: false,
+    listOfLinks: ["SQL Home", "SQL Intro", "SQL Syntax"],
+    userAnswerInSQLHomePage: "",
+    expectedAnswerInSQLHomePage: "SELECT"
   }
 
 changeEditorState = event => {
-  let isEditorVisible = this.state.isEditorVisible
   this.setState({
-    isEditorVisible: ! (isEditorVisible)
+    pageContent: "editor"
   })
 }
+
+handleRadioButtonClick(value) {
+    console.log(value)
+  console.log(" I am 1")
+}
+
 renderJoinTypesImageArea() {
   let innerJoinImage = require('C:/practiceReactApp/practice_app/src/innerJoin.gif')
   let leftJoinImage = require('C:/practiceReactApp/practice_app/src/leftJoin.gif')
@@ -957,6 +967,15 @@ renderJoinTypesImageArea() {
       {" "}
       <img src={fullOuterJoinImage} />
     </div>
+  )
+}
+
+previousAndNextButtonToolbar() {
+  return (
+  <ButtonToolbar>
+  <Button variant="success" class="align-baseline"> Previous </Button>
+  <Button variant="success" class="button-extreme-right" > Next </Button>
+  </ButtonToolbar>
   )
 }
 
@@ -980,12 +999,25 @@ renderQuestionInExerciseArea() {
   )
 }
 
-navigateToSubmitAnswerPage() {
-  return (
-    <div>
-      
-    </div>
-  )
+verifyAnswerInSQLHomePage = event => {
+  let submittedValue = this.state.userAnswerInSQLHomePage
+
+  if (submittedValue.toLowerCase() == this.state.expectedAnswerInSQLHomePage.toLowerCase() || submittedValue.toUpperCase == this.state.expectedAnswerInSQLHomePage.toUpperCase()) {
+    this.setState({isAnswerCorrect: true})
+  }
+}
+
+verifyAnswer = event => {
+  let submittedAnswer1 = this.state.answer1Input
+  let submittedAnswer2 = this.state.answer2Input
+
+  if (submittedAnswer1 == this.state.expectedAnswer1 && submittedAnswer2 == this.state.expectedAnswer2){
+    this.setState({isAnswerCorrect: true})
+  }
+}
+
+navigateToSubmitAnswerPage = event => {
+  this.setState({pageContent: "submit-answer-area"})
 }
 
 renderExerciseArea() {
@@ -1033,14 +1065,8 @@ renderEditor () {
 renderMainPageContent() {
   return(
   <div>
-  <h2 class="text-left"> SQL Joins </h2>
-  <ButtonToolbar>
-    <Button variant="success" class="align-baseline"> Previous </Button>
-    <div class="text-center">
-    <Button variant="success" class="align-baseline" > Next </Button>
-    </div>
-   </ButtonToolbar>
-
+  <h2 className="text-left"> SQL Joins </h2>
+  {this.previousAndNextButtonToolbar()}
   <h4> SQL Join </h4>
   <h5> A JOIN clause is used to combine rows from two or more tables, based on a related column between them. </h5>
   <h5> Let's look at a selection from the "Orders" table: </h5>
@@ -1082,6 +1108,63 @@ renderMainPageContent() {
 )
 }
 
+handleUserAnswer1 = event => {
+  this.setState({answer1Input: event.target.value})
+}
+updateUserAnswerInSQLHomePage = event => {
+  this.setState({userAnswerInSQLHomePage: event.target.value})
+}
+
+handleUserAnswer2 = event => {
+  this.setState({answer2Input: event.target.value})
+}
+
+
+renderAreaAfterSubmission() {
+    if (this.state.isAnswerCorrect == true) {
+      return(
+        <p> Answer is Correct </p>
+      )
+    }else {
+      return (
+        <p> Answer is Incorrect </p>
+      )
+    }
+}
+
+renderSubmitAnswerPage() {
+  return (
+    <div>
+    <div>
+        <h1>
+          Exercise:
+        </h1>
+        <h5>
+          Insert the missing parts in the JOIN clause to join the two tables Orders and Customers, using the CustomerID field in both the tables as relationship between the two tables.
+        </h5>
+        <div class="shadow-none p-4 mb-4 bg-light">
+            <p>
+                SELECT *
+            </p>
+            <p>
+                FROM Orders
+            </p>
+            <p>
+                LEFT JOIN Customers
+            </p>
+            <input type="text" onChange = {this.handleUserAnswer1}/>
+            =
+            <input type="text" onChange = {this.handleUserAnswer2}/>
+            ;
+            <Button variant="success" class="align-baseline" onClick = {this.verifyAnswer}> Submit Answer </Button>
+        </div>
+     </div>
+     <div>
+      {this.renderAreaAfterSubmission()}
+     </div>
+     </div>
+  )
+}
 
 renderExampleArea() {
   return (
@@ -1212,21 +1295,316 @@ renderExampleCustomersTable() {
   )
 }
 
-  render () {
-      if (this.state.isEditorVisible == true) {
-        return(
-        <div>
-        {this.renderEditor()}
-       </div>
-     )
-      }
-      else if (this.state.isEditorVisible == false) {
-        return(
-        <div>
-        {this.renderMainPageContent()}
+renderExampleTableInSQLSyntaxPage() {
+  return(
+    <div>
+    <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">CustomerID</th>
+      <th scope="col">CustomerName</th>
+      <th scope="col">ContactName</th>
+      <th scope="col">Address</th>
+      <th scope="col">City</th>
+      <th scope="col">PostalCode</th>
+      <th scope="col">Country</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row">1</th>
+      <td>Alfreds Futterkiste</td>
+      <td>Maria Anders</td>
+      <td>Obere Str. 57</td>
+      <td>Berlin</td>
+      <td>12209</td>
+      <td>Germany</td>
+    </tr>
+    <tr>
+    <th scope="row">2</th>
+    <td>Ana Trujillo Emparedados y helados</td>
+    <td>Ana Trujillo</td>
+    <td>Avda. de la Constitución 2222</td>
+    <td>México D.F.</td>
+    <td>05021</td>
+    <td>Mexico</td>
+    </tr>
+    <tr>
+    <th scope="row">3</th>
+    <td>Antonio Moreno Taquería</td>
+    <td>Antonio Moreno</td>
+    <td>Mataderos 2312</td>
+    <td>México D.F.</td>
+    <td>05023</td>
+    <td>Mexico</td>
+    </tr>
+
+  </tbody>
+</table>
+     </div>
+  )
+}
+
+renderSQLSyntaxPage() {
+  return(
+    <div>
+      <h1> SQL Syntax </h1>
+      {this.previousAndNextButtonToolbar()}
+      <hr/>
+      <h3> Database Tables </h3>
+      <p> A database most often contains one or more tables. Each table is identified by a name (e.g. "Customers" or "Orders"). Tables contain records (rows) with data. </p>
+      <p> In this tutorial we will use the well-known Northwind sample database (included in MS Access and MS SQL Server). </p>
+      <p> Below is a selection from the "Customers" table: </p>
+      {this.renderExampleTableInSQLSyntaxPage()}
+      <p> The table above contains three records (one for each customer) and seven columns (CustomerID, CustomerName, ContactName, Address, City, PostalCode, and Country). </p>
+      <hr/>
+      <h3> SQL Statements </h3>
+      <p> Most of the actions you need to perform on a database are done with SQL statements. </p>
+      <p> The following SQL statement selects all the records in the "Customers" table: </p>
+      <div class="shadow-none p-4 mb-4 bg-light">
+          <h4> Example </h4>
+          <div class="shadow-sm p-4 mb-4 bg-white">
+                SELECT * FROM Customers;
+          </div>
+          <Button variant="success" class="align-baseline" > Try it Yourself >> </Button>
+      </div>
+      <p> In this tutorial we will teach you all about the different SQL statements. </p>
+      <hr/>
+      <h3> Keep in Mind That... </h3>
+      <ul>
+          <li class="square"> SQL keywords are NOT case sensitive: select is the same as SELECT </li>
+      </ul>
+      <p> In this tutorial we will write all SQL keywords in upper-case. </p>
+      <hr/>
+      <h3> Semicolon after SQL Statements? </h3>
+      <p> Some database systems require a semicolon at the end of each SQL statement. </p>
+      <p> Semicolon is the standard way to separate each SQL statement in database systems that allow more than one SQL statement to be executed in the same call to the server. </p>
+      <p> In this tutorial, we will use semicolon at the end of each SQL statement. </p>
+      <hr/>
+      <h3> Some of the Most Important SQL Commands </h3>
+      <ul>
+        <li class="square">
+          <b> SELECT </b>
+            - extracts data from database
+        </li>
+        <li class="square">
+          <b> UPDATE </b>
+            - updates data in a database
+        </li>
+        <li class="square">
+          <b> DELETE  </b>
+          - deletes data from a database
+        </li>
+        <li class="square">
+          <b> INSERT INTO  </b>
+          - inserts new data into a database
+        </li>
+        <li class="square">
+          <b> CREATE DATABASE </b>
+          - creates a new database
+        </li>
+        <li class="square">
+            <b> ALTER DATABASE </b>
+            - modifies a database
+        </li>
+        <li class="square">
+            <b> CREATE TABLE </b>
+            - creates a new table
+        </li>
+        <li class="square">
+            <b> ALTER TABLE </b>
+            - modifies a table
+        </li>
+        <li class="square">
+            <b> DROP TABLE </b>
+            - deletes a table
+        </li>
+        <li class="square">
+            <b> CREATE INDEX </b>
+            - creates an index (search key)
+        </li>
+        <li class="square">
+          <b> DROP INDEX </b>
+          - deletes an index
+        </li>
+      </ul>
+      {this.previousAndNextButtonToolbar()}
+    </div>
+  )
+}
+
+renderSQLIntroPage() {
+  return(
+    <div>
+        <h2> Introduction to SQL </h2>
+        {this.previousAndNextButtonToolbar()}
+        <hr/>
+        <p> SQL is a standard language for accessing and manipulating databases. </p>
+        <hr/>
+        <h3> What is SQL ? </h3>
+        <hr/>
+          <ul>
+            <li class="square"> SQL stands for Structured Query Language </li>
+            <li class="square"> SQL lets you access and manipulate databases </li>
+            <li class="square"> SQL became a standard of the American National Standards Institute (ANSI) in 1986, and of the International Organization for Standardization (ISO) in 1987 </li>
+          </ul>
+        <hr/>
+        <h3> What Can SQL do? </h3>
+        <ul>
+          <li class="square"> SQL can execute queries against a database </li>
+          <li class="square"> SQL can retrieve data from a database </li>
+          <li class="square"> SQL can insert records in a database </li>
+          <li class="square"> SQL can update records in a database</li>
+          <li class="square"> SQL can delete records from a database</li>
+          <li class="square"> SQL can create new databases</li>
+          <li class="square"> SQL can create new tables in a database</li>
+          <li class="square"> SQL can create stored procedures in a database</li>
+          <li class="square"> SQL can create views in a database</li>
+          <li class="square"> SQL can set permissions on tables, procedures, and views</li>
+        </ul>
+        <hr/>
+        <h3> SQL is a Standard - BUT .... </h3>
+        <p>  Although SQL is an ANSI/ISO standard, there are different versions of the SQL language. </p>
+        <p> However, to be compliant with the ANSI standard, they all support at least the major commands (such as SELECT, UPDATE, DELETE, INSERT, WHERE) in a similar manner. </p>
+        <div class="bg-warning">
+          <strong> Note: </strong>
+          Most of the SQL database programs also have their own proprietary extensions in addition to the SQL standard!
+          <br/>
         </div>
+        <hr/>
+        <h3>
+          RDBMS
+        </h3>
+        <p> RDBMS stands for Relational Database Management System. </p>
+        <p> RDBMS is the basis for SQL, and for all modern database systems such as MS SQL Server, IBM DB2, Oracle, MySQL, and Microsoft Access. </p>
+        <p> The data in RDBMS is stored in database objects called tables. A table is a collection of related data entries and it consists of columns and rows. </p>
+        <p> Look at the "Customers" table:</p>
+        <div class="shadow-none p-4 mb-4 bg-light">
+            <h4> Example </h4>
+            <div class="shadow-sm p-4 mb-4 bg-white">
+                  SELECT * FROM Customers;
+            </div>
+            <Button variant="success" class="align-baseline" > Try it Yourself >> </Button>
+        </div>
+        <p> Every table is broken up into smaller entities called fields. The fields in the Customers table consist of CustomerID, CustomerName, ContactName, Address, City, PostalCode and Country. A field is a column in a table that is designed to maintain specific information about every record in the table. </p>
+        <p> A record, also called a row, is each individual entry that exists in a table. For example, there are 91 records in the above Customers table. A record is a horizontal entity in a table. </p>
+        <p> A column is a vertical entity in a table that contains all information associated with a specific field in a table. </p>
+
+    </div>
+  )
+}
+
+renderSQLHomePage() {
+  return(
+    <div>
+        <h2>
+          SQL Tutorial
+        </h2>
+        <div class="shadow-none p-4 mb-4 bg-success">
+        <h5 class="text-white"> SQL is a standard language for storing, manipulating and retrieving data in databases. </h5>
+        <h5 class="text-white"> Our SQL tutorial will teach you how to use SQL in: MySQL, SQL Server, MS Access, Oracle, Sybase, Informix, Postgres, and other database systems. </h5>
+        </div>
+        <h3> Examples in Each Chapter </h3>
+        <h5> With our online SQL editor, you can edit the SQL statements, and click on a button to view the result. </h5>
+        <div class="shadow-none p-4 mb-4 bg-light">
+        <h4> Example </h4>
+          <div class="shadow-sm p-4 mb-4 bg-white">
+                  <p> SELECT * FROM Customers;
+                  </p>
+          </div>
+          <Button variant="success" class="align-baseline" onClick = {this.changeEditorState}> Try it Yourself >> </Button>
+        </div>
+        <p> Click on the "Try it Yourself" button to see how it works. </p>
+        <h2> SQL Exercises </h2>
+        <div class="shadow-none p-4 mb-4 bg-dark">
+          <h2> Test Yourself With Exercises </h2>
+          <div class="shadow-sm p-4 mb-4 bg-white">
+                <h3> Exercise: </h3>
+                <h5> Insert the missing statement to get all the columns from the Customers table. </h5>
+                <div class="shadow-none p-4 mb-4 bg-light">
+                    <input type="text" onChange = {this.updateUserAnswerInSQLHomePage}/>
+                    {" "}
+                    * FROM  Customers ;
+                </div>
+                <Button variant="success" class="align-baseline" onClick = {this.verifyAnswerInSQLHomePage}> Submit Answer >> </Button>
+                <div>
+                  {this.renderAreaAfterSubmission()}
+                </div>
+          </div>
+        </div>
+    </div>
+  )
+}
+
+renderMainPage(){
+  if (this.state.pageContent == "editor") {
+    return(
+    <div>
+    {this.renderEditor()}
+   </div>
+ )
+  }
+  else if (this.state.pageContent == "main-page") {
+    return(
+    <div>
+    {this.renderMainPageContent()}
+    </div>
+)
+  } else if (this.state.pageContent == "submit-answer-area") {
+    return (
+      <div>
+        {this.renderSubmitAnswerPage()}
+      </div>
+    )
+  } else if (this.state.pageContent == "SQL Home") {
+      return (
+        <div>
+            {this.renderSQLHomePage()}
+        </div>
+      )
+    } else if (this.state.pageContent == "SQL Intro") {
+      return (
+        <div>
+            {this.renderSQLIntroPage()}
+        </div>
+      )
+    } else if (this.state.pageContent == "SQL Syntax") {
+      return (
+        <div>
+        {this.renderSQLSyntaxPage()}
+        </div>
+      )
+    }
+  }
+
+ changeStateAfterClick = (linkText) => {
+    this.setState({pageContent: linkText.link})
+  }
+
+  render () {
+    return(
+      <div>
+        <div class="container">
+          <form action="#" method="post" id="radio_form">
+          <label class="radio-inline"><input type="radio" name="optradio" value="1" onClick="handleRadioButtonClick({this.value})"/>Option 1</label>
+          <label class="radio-inline"><input type="radio" name="optradio" value="2" />Option 2</label>
+          <label class="radio-inline"><input type="radio" name="optradio" value="3" />Option 3</label>
+          </form>
+        </div>
+        <div class="row">
+            <div className="col-md-2 scrollClass">
+              {this.state.listOfLinks.map(link => (
+                <div>
+                  <button type="button" class="btn btn-link" onClick = {() => this.changeStateAfterClick({link})}> {link} </button>
+                </div>
+                ))}
+            </div>
+            <div class="col-md-10">
+                {this.renderMainPage()}
+            </div>
+        </div>
+      </div>
     )
   }
-}
 }
 export default App;
