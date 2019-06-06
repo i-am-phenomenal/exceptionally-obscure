@@ -921,7 +921,7 @@ class App extends React.Component {
   }
 
   state = {
-    pageContent: "main-page",
+    pageContent: "login-or-register",
     typesOfJoins: [
       "(INNER) JOIN: Returns records that have matching values in both tables",
       "LEFT (OUTER) JOIN: Returns all records from the left table and the matched records from the right table",
@@ -942,11 +942,6 @@ changeEditorState = event => {
   this.setState({
     pageContent: "editor"
   })
-}
-
-handleRadioButtonClick(value) {
-    console.log(value)
-  console.log(" I am 1")
 }
 
 renderJoinTypesImageArea() {
@@ -1577,34 +1572,112 @@ renderMainPage(){
     }
   }
 
+navigateToAboutPage = event => {
+  this.setState({pageContent: "about-page"})
+}
+
+  renderFooter(){
+    return(
+      <footer class="page-footer font-small blue">
+      <div class="footer-copyright text-center py-3">
+      <p class="text-light">
+      W3Schools is optimized for learning, testing, and training. Examples might be simplified to improve reading and basic understanding. Tutorials, references, and examples are constantly reviewed to avoid errors, but we cannot warrant full correctness of all content. While using this site, you agree to have read and accepted our terms of use, cookie and privacy policy.
+      Copyright 1999-2019 by Refsnes Data. All Rights Reserved. </p>
+      <Button variant="primary" class="align-baseline" onClick={this.navigateToAboutPage}> About </Button>
+      </div>
+      </footer>
+
+    )
+  }
+
+  renderAboutPage() {
+    return(
+      <div>
+      <h3>  About This Website </h3>
+      {this.previousAndNextButtonToolbar()}
+      <hr/>
+      <h3> What is this website ? </h3>
+      <p> This is a web developers site, with tutorials and references on web development languages such as SQL, covering most aspects of web programming. </p>
+      <p> The site derives its name from the World Wide Web (W3), but is not affiliated with the W3C. </p>
+      <p> It was originally created in 1998 by Refsnes Data, a Norwegian software development and consulting company. </p>
+      <hr/>
+      <h3> Easy Learning </h3>
+      <p> It has focus on simplicity. </p>
+      <p> It practices easy and straight-forward learning. </p>
+      <p> It uses simple code explanations with simple illustrations of how to use it. </p>
+      <p> Its tutorials start from basic level and move all the way up to professional references. </p>
+      <hr/>
+      <h3> Try it Yourself </h3>
+      <p> It presents thousands of code examples. </p>
+      <p> By using our online editor, Try it Yourself, you can edit examples and execute computer code experimentally, to see what works and what does not, before implementing it. </p>
+      <hr/>
+      <h3> It is Free </h3>
+      <p> It is , and always be, a completely free developer resource </p>
+      <hr/>
+      <h3> You Can Help </h3>
+      
+      </div>
+    )
+  }
+
+  renderLoginOrRegisterPage() {
+    return(
+      <div>
+          <div class="shadow-none p-4 mb-4 bg-light">
+              <h3 class="text-center">  </h3>
+          </div>
+          <div>
+            <div class="shadow-none p-4 mb-4 bg-light">
+                  <div class="shadow-sm p-4 mb-4 bg-dark">
+                  <div class="container1">
+                      <Button variant="success" class="align-baseline"> Login </Button>
+                      <Button variant="success" class="button-extreme-right" > Register </Button>
+                  </div>
+                  {this.renderFooter()}
+                  </div>
+             </div>
+          </div>
+      </div>
+    )
+  }
+
  changeStateAfterClick = (linkText) => {
     this.setState({pageContent: linkText.link})
   }
 
   render () {
-    return(
-      <div>
-        <div class="container">
-          <form action="#" method="post" id="radio_form">
-          <label class="radio-inline"><input type="radio" name="optradio" value="1" onClick="handleRadioButtonClick({this.value})"/>Option 1</label>
-          <label class="radio-inline"><input type="radio" name="optradio" value="2" />Option 2</label>
-          <label class="radio-inline"><input type="radio" name="optradio" value="3" />Option 3</label>
-          </form>
+    if (this.state.pageContent == "login-or-register") {
+        return (
+          <div>
+            {this.renderLoginOrRegisterPage()}
+          </div>
+        )
+    } else if (this.state.pageContent == "about-page") {
+        return(
+          <div>
+              {this.renderAboutPage()}
+          </div>
+
+        )
+    } else {
+      return(
+        <div>
+          <div class="row">
+              <div className="col-md-2 scrollClass">
+                {this.state.listOfLinks.map(link => (
+                  <div>
+                    <button type="button" class="btn btn-link" onClick = {() => this.changeStateAfterClick({link})}> {link} </button>
+                  </div>
+                  ))}
+              </div>
+              <div class="col-md-10">
+                  {this.renderMainPage()}
+              </div>
+          </div>
         </div>
-        <div class="row">
-            <div className="col-md-2 scrollClass">
-              {this.state.listOfLinks.map(link => (
-                <div>
-                  <button type="button" class="btn btn-link" onClick = {() => this.changeStateAfterClick({link})}> {link} </button>
-                </div>
-                ))}
-            </div>
-            <div class="col-md-10">
-                {this.renderMainPage()}
-            </div>
-        </div>
-      </div>
-    )
+      )
+    }
+
   }
 }
 export default App;
