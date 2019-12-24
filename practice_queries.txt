@@ -1,0 +1,89 @@
+QUERY TO GET ALL OUTCOMES SETS CORRESPONDING TO AN ORGANIZATION
+
+-- select title, sort_order, is_archived from outcomes where title = 'Outcome Third A1';
+-- select * from organization_outcome_set_outcomes where outcome_uuid = '4771215c-b31b-46ef-9d72-d403f6615d42';
+-- select * from organization_outcome_sets where uuid = 'd52db2ed-0284-4760-a898-7c3df8f171b4';
+-- select * from organizations where uuid = 'adfcea19-302c-423b-82ff-af06daf7d26d';
+-- Trying to combine all these queruies using join 
+select * from organizations 
+ join organization_outcome_sets 
+ on organizations.uuid = organization_outcome_sets.organization_uuid
+ join organization_outcome_set_outcomes 
+ on organization_outcome_set_outcomes.organization_outcome_set_uuid = organization_outcome_sets.uuid 
+ join outcomes
+ on outcomes.uuid = organization_outcome_set_outcomes.outcome_uuid
+ where organizations.uuid = 'adfcea19-302c-423b-82ff-af06daf7d26d';
+--  on organization_outcome_set_outcomes.organization_outcome_set_uuid = 
+
+
+
+QUERY TO GET THE NAME OF AN ORGANIZATION BY GIVING THE OUTCOME UUID 
+
+4771215c-b31b-46ef-9d72-d403f6615d42 // outcome _uuid  
+
+select outcomes.title, organizations.name from outcomes 
+join organization_outcome_set_outcomes 
+on organization_outcome_set_outcomes.outcome_uuid = outcomes.uuid 
+join organization_outcome_sets 
+on  organization_outcome_set_outcomes.organization_outcome_set_uuid = organization_outcome_sets.uuid
+join organizations 
+on organizations.uuid = organization_outcome_sets.organization_uuid 
+where outcomes.uuid = '4771215c-b31b-46ef-9d72-d403f6615d42';
+
+
+855fe9fe-1048-48e0-8500-3a2f6c37a697 // Maybe organization uuid
+
+
+-- count of outcomes for an organization
+select  count(*) from organizations 
+join organization_outcome_sets as oos 
+on oos.organization_uuid = organizations.uuid
+join organization_outcome_set_outcomes as ooso 
+on ooso.organization_outcome_set_uuid = oos.uuid
+where organizations.uuid = '855fe9fe-1048-48e0-8500-3a2f6c37a697';
+
+
+-- GET ALL COURSES ASSOCIATED WITH A GIVEN ORGANIZATION
+
+-- select *  from courses
+-- join organizations as o 
+-- on o.uuid = courses.organization_uuid
+-- where courses.uuid = '9b0eafbe-6480-457f-ae25-9cb2e73a34d2';
+
+-- select name from organizations as o where  o.uuid = '3f343da9-6cb9-46b7-8d76-a8ee46ed42be'; //Undergraduate Programs
+select o.name, c.catalog_code from organizations as o
+join courses as c 
+on o.uuid = c.organization_uuid
+where o.uuid = '3f343da9-6cb9-46b7-8d76-a8ee46ed42be';
+
+
+-- Get all revisions corresponding to an outcome using self join. Need outcome data as well 
+
+select o.title, rev.title from outcomes as o
+inner join outcomes as rev 
+on o.uuid = rev.parent_outcome
+where o.uuid = '22c5d48f-b174-4c1d-ad69-d0f05ffcc230';
+
+
+
+-- GET ALL PARENTS OF AN ORGANIZATION (WIP)
+-- select o.name, o1.name from organizations as o 
+-- inner join organizations as o1
+-- on o.uuid = o1.parent_uuid or o1.uuid = o.parent_uuid
+-- where o.uuid = '453f174d-161d-40bb-b1bb-bd548504ca3e';
+
+
+-- GET ALL REVISIONS OF AN OUTCOME IN A LIST 
+select o.title, array(select title from outcomes  where parent_outcome = '22c5d48f-b174-4c1d-ad69-d0f05ffcc230') from outcomes as o
+where o.uuid = '22c5d48f-b174-4c1d-ad69-d0f05ffcc230';
+
+
+-- QUERY TO FETCH ALL OUTCOMES WITH THEIR CORRESPONDING REVISIONS IN A LIST 
+-- select o.title, array_to_string(array_agg(o.title), ',') from outcomes as o
+
+select distinct o.title, array(select title from outcomes where parent_outcome = o.uuid order by inserted_at) from outcomes as o
+where o.parent_outcome is null;
+-- wher;
+-- where o.parent_outcome is not null;
+-- inner join outcomes as o1 
+-- on o.uuid = o1.parent_outcome;
