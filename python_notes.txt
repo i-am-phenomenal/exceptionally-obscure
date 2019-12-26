@@ -1,0 +1,59 @@
+
+-> #prefixing a variable with an underscore makes the variable a protected member of the class
+
+-> #self is an instance of a class. Whereas __init__ can be called as a constructor of the same class in object oriented terminology. It gets called when the object of a class is made and it either initializes the data members of the class with the arguments of the __init__ function  or it sets the default values 
+example ->
+    class DummyClass ():
+        def __init__(self):
+            self.a = 1
+            sefl.b = 2
+            
+    
+    class AnotherClass():
+        def __init__(self, value_for_a, value_for_b):
+            self.a = value_for_a 
+            self.b = value_for_b
+            
+            
+
+#PROBLEM
+#Find out the cost of a rectangular field with breadth(b=120), length(l=160). It costs x (2000) rupees per 1 square unit
+
+class Rectangle():
+    def __init__(self, length, breadth):
+        self.length = length
+        self.breadth = breadth 
+        
+    def return_area(self):
+        return (self.length * self.breadth)
+    
+    def return_cost(self):
+        rect_area = self.return_area()
+        return (rect_area * 2000)
+    
+    
+object = Rectangle(160, 120)
+cost = object.return_cost()
+print("Cost = ", cost)
+
+
+          
+-> The protected members of a class are those members which can only be accessed from within the class or from a class's Child class (in terms of inheritance). 
+If we try to access the protected members outside of a class it would throw an error. As mentioned above, to declare a protected member for a classin Python, just prefix it with an underscore. 
+    example 
+     class Dummy():
+        def __init__(self):
+            self._a = "Bla Bla Bla"
+            
+CODE
+    class BaseClass():
+        def __init__(self):
+            self._protected_member = 10
+            
+    class ChildClass(BaseClass):
+        def __init__(self):
+            BaseClass.__init__(self)
+            print(self._protected_member)
+            
+    object = ChildClass()
+    print(object._protected_member) // This line would give an error since we are trying to access the protected member outside of the class.
