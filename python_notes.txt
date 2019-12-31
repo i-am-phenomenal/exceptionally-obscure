@@ -57,3 +57,73 @@ CODE
             
     object = ChildClass()
     print(object._protected_member) // This line would give an error since we are trying to access the protected member outside of the class.
+    
+ SHALLOW COPY AND DEEP COPY -> 
+ Lets say that we have the following two classes :-
+    class Point(): 
+        def __init__(self): 
+            self.x = dummy_value
+            self.y = dummy_value 
+
+    class Rectangle(): 
+        def __init__(self): 
+            self.width = dummy_value
+            self.height = dummy_value 
+            self.corner = Point() 
+
+In this case, if we try to make an object of Rectangle class, there would be a inner object Point inside of the rect class too. Now if we use the copy module and copy the first object into another object, the second object would have the same height and width values as the first object and also the corner attribute of the second object would point to the same memory reference of the corner member of the first object. This is what shallow copy is. The values are copied along with the references.
+
+import copy 
+rect = Rectangle() 
+rect_2 = copy.copy(rect)
+
+The problem which gets introduced here is that if somehow we changed the x, y values of the corner object in rect_2, then this would get reflected in rect too. 
+For instance if i changed the x, y in corner of  rect_2 to 10, 20 (from 0,0),
+
+rect_2.corner.x = 10 
+rect_2.corner.y = 20
+
+Then rect.corner.x would also show 10 and rect.corner.y would also show 20.
+
+To solve this problem, we use the concept of deep copy.
+
+Consider the following code :
+
+import copy
+
+class Point():
+    def __init__(self, x_coord, y_coord):
+        self.x = x_coord
+        self.y = y_coord
+
+class Rectangle():
+    def __init__(self, width, height, *args):
+        if len(args) is 0:
+            (x_coord, y_coord) = (0, 0)
+        else:
+            (x_coord, y_coord) = args
+        self.width = width
+        self.height = height
+        self.corner = Point(x_coord, y_coord)
+
+
+rect = Rectangle(1, 2)
+rect_2 = copy.copy(rect)
+inner_object = rect.corner
+new_inner = Point(0, 0)
+new_inner = copy.copy(inner_object)
+
+rect_2.corner = new_inner
+
+inner_object_id = id(rect.corner)
+inner_object_id_2 = id(rect_2.corner)
+
+print((rect_2.width, rect_2.height, rect_2.corner))
+print((rect.width, rect.height, rect.corner))
+print(inner_object_id)
+print(inner_object_id_2)
+
+
+In the above case we are manually creating an object for Point class and manually copying the x, y values from rect.corner into this new object and assignig this new object to rect_2.corner.
+So if the user changes the values x, y in rect_2.corner, then it would not be reflected in rect.corner
+This is what deep copy is.
