@@ -127,3 +127,33 @@ print(inner_object_id_2)
 In the above case we are manually creating an object for Point class and manually copying the x, y values from rect.corner into this new object and assignig this new object to rect_2.corner.
 So if the user changes the values x, y in rect_2.corner, then it would not be reflected in rect.corner
 This is what deep copy is.
+
+
+PURE FUNCTIONS -> 
+    The functions which have no effect on the objects passed as parameters are pure functions. This means that whenever we pass an object as an argument to a function and the function does not mutate the state of that object, the function is termed as pure function.
+    Consider the following scenario : 
+        class Time(): 
+            def __init__(self, hour , minutes, second): 
+                self.hour = hour 
+                self.minute = minutes
+                self.seconds =  seconds 
+                
+                
+     Now, lets create two objects of the Time class.
+     time_1 = Time() 
+     time_2 = Time() 
+     
+    Lets say there is a function add_time which takes the above 2 objects as arguments and adds the time from both these objects
+    
+    def add_time(time_1, time_2): 
+        time_3 = Time() 
+        time_3.hour = time_1.hour + time_2.hour 
+        time_3.minutes = time_1.minutes + time_2.minutes
+        time_3.seconds = time_1.seconds + time_2.seconds
+        return time_3
+        
+     The above function does not mutate the state of time_1 or time_2. It creates a new object of time_3 Time class and initializes the values in time_3 with the values of time_1 and time_2 and returns the newly created object. So in this case, add_time is a pure function.
+        
+    
+    
+    
