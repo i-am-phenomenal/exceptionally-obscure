@@ -1307,3 +1307,134 @@
 #for char in string:
 #    print(char, string.count(char))
 
+#import json 
+#print("111111111111111111111111")
+#with open('json_dataset.txt') as json_file:
+#    data = json.load(json_file)
+#    print(data)
+#
+# class A:
+#     def __init__(self):
+#         self._a = "1"
+        
+#     def get_self_a():
+#         return self._a
+    
+# class B(A):
+#     def __init__(self):
+#         A.__init__(self)
+#         print(self._a)
+        
+# obj = B()
+#print(obj._a)
+
+class Time():
+    def __init__(self, *args):
+        if len(args) is 0: 
+            (hours, minutes, seconds) = (0, 0, 0)
+        else:
+            (hours, minutes, seconds)  = args
+        self.hours = hours
+        self.minutes = minutes 
+        self.seconds = seconds 
+
+
+time_1 = Time(1, 2, 3)
+time_2 = Time(1, 2, 3)
+
+def check_for_hours(time):
+    if time.hours >= 24:
+        return True
+    else: 
+        return False 
+
+def check_for_minutes(time):
+    if time.minutes >= 60:
+        return True 
+    else: 
+        return False 
+
+def update_minutes_and_hours(time_1):
+    if check_for_hours(time_1): 
+        time_1.hours = time_1.hours + 1
+    else: 
+        pass
+
+def change_time(time_1):
+    if time_1.seconds >= 60:
+        time_1.seconds = time_1.seconds - 60
+        if check_for_minutes(time_1):
+            time_1.minutes = time_1.minutes - 60
+            if check_for_hours(time_1): 
+                time_1.hours = time_1.hours + 1
+            else: 
+                pass 
+        else: 
+            pass 
+    elif check_for_minutes(time_1):
+        time_1.minutes =  time_1.minutes - 60
+        if time_1.hours == 23: 
+            time_1.hours = 24
+        update_minutes_and_hours(time_1)
+
+    elif check_for_hours(time_1):
+        time_1.hours = time_1.hours - 24
+    else: 
+        time_1 
+
+# o = Time(23, 64, 67)
+# change_time(o)
+# print(o.hours, o.minutes, o.seconds)
+
+# This is a pure function
+def add_time(time_obj, time_obj_2):
+    time_3 = Time()
+    time_3.hours = time_1.hours + time_2.hours 
+    time_3.minutes = time_1.minutes + time_2.minutes 
+    time_3.seconds = time_1.seconds + time_2.seconds 
+    return time_3  
+
+time_3 = add_time(time_1, time_2)
+# print(time_3.hours, time_3.minutes, time_3.seconds)
+
+def change_time_v2(time): 
+    hrs = time.hours 
+    mins = time.minutes 
+    secs = time.seconds
+    updated_secs = time.seconds - 60
+    updated_mins = time.minutes - 60 
+    updated_hrs = time.hours - 24
+
+    if secs >= 59: 
+        if mins >= 59:
+            if hrs >= 23: 
+                time.seconds =  updated_secs
+                time.minutes = updated_mins 
+                time.hours = updated_hrs 
+            else: 
+                time.seconds = updated_secs 
+                time.minutes = updated_mins
+
+        else: 
+            if hrs >=23: 
+                time.seconds = updated_secs 
+                time.hours = updated_hrs 
+            else: 
+                time.seconds = updated_secs 
+
+    if not (secs >= 59):
+        if mins >= 59: 
+            if hrs >= 23: 
+                time.minutes = updated_mins
+                time.hours = updated_hrs 
+            else: 
+                time.minutes = updated_mins 
+        else: 
+            if hrs >= 23: 
+                time.hours = updated_hrs 
+            else: 
+                time
+
+o = Time(25, 62, 70)
+change_time_v2(o)
+print(o.hours, o.minutes, o.seconds)
