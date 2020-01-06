@@ -154,6 +154,55 @@ PURE FUNCTIONS ->
         
      The above function does not mutate the state of time_1 or time_2. It creates a new object of time_3 Time class and initializes the values in time_3 with the values of time_1 and time_2 and returns the newly created object. So in this case, add_time is a pure function.
         
+ENCAPSULATION -> 
+        The process of encapsulating some lines of code into a function is called encapsulation.
+        Or we can say that the process of putting some lines of code into a function is called encapsulation.
+        Or Wrapping a piece of code intoa function ias called encapsulation.
+        Its advantages are :- 
+            Makes code more reusable. 
+            It attaches a name to the code whoich kind of acts a documentation for the code
+
+
+GENERALIZATION -> 
+    The process of adding a parameter toi a function is called generalization. 
+    In this way we are generalizing a function to different sets of paramter values. 
+    for example -> 
+
+    def add_function(10,20):
+        return 10 + 20 
+
+    Instead of the above definition of the add_function, we can generalize it by using variables in the arguments of the function
+
+    def add_function(var_1 , var_2):
+        return var_1 + var_2
+
+LIST COMPREHENSION -> 
+    Instead of writing for loops and if conditions to put items in a list, we can simply use list comprehension.
+    It provides a very clean and succint way to initialize a list. 
+    Code Example -> 
+        dummy_list = [x for x in range(10)]
     
-    
+    The above example would give a list with values from 0 to 9 in it.
+    In terms of code quality and cleanliness, list comprehension is a preferred way over the below approach for the above example.
+    dummy_list = []
+    for x in range(10):
+        dummy_list = dummy_list.append(x)
+
+    We can also use conditionals in List comprehension.
+     even_numbers = [x for x in range(20) if x % 2 == 0]
+
+     The above line returns a list of even numbers ranging from 0 to 20.
+
+    We can also replicate if statements using list comprehension 
+    replicate_list = [ x for x in range(100) if x % 3 == 0 if x % 5 == 0]
+
+    The above code returns a list of numbers which are only divisibvle by 3 and 5 ranging from 0 to 100
+    The above problem could also be solved by using the below code 
+
+    replicate_list = [x for x in range(100) if x % 3 == 0 and x % 5 == 0 ]
+
+    We can also use nested for loops in a list comprehension 
+    nested_for_list = [x * y for x in range(4) for y in range(4)]
+    // Lets hope the code is self explanatory
+
     
