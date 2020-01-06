@@ -1435,6 +1435,22 @@ def change_time_v2(time):
             else: 
                 time
 
-o = Time(25, 62, 70)
-change_time_v2(o)
-print(o.hours, o.minutes, o.seconds)
+# o = Time(25, 62, 70)
+# change_time_v2(o)
+# print(o.hours, o.minutes, o.seconds)
+
+
+
+even_numbers = [x for x in range(0, 20) if x % 2 == 0 ]
+
+test_list = [ x for x in range(100) if x % 5 == 0 and x % 3 == 0]
+
+nested_list = [x * y for x in range(3) for y in range(3)]
+
+dummy_function = lambda x: x * 2
+
+
+dummy_list = [x for x in range(20)]
+
+print(list(filter(lambda x: x % 2 == 0, dummy_list)))
+
