@@ -35,11 +35,11 @@ def calculate_price(items):
     total_cost = 0
     items_dict = get_distinct_items(items)
     for value in items_dict:
-        if value == "a" and items_dict[value] >= 3:
+        if value == "A" and items_dict[value] >= 3:
             print("I am here")
             total_cost += return_cost_for_A(items_dict, value)
 
-        elif value == "b" and items_dict[value] >= 2:
+        elif value == "B" and items_dict[value] >= 2:
             total_cost += return_cost_for_B(items_dict, value)
 
         else:
@@ -49,6 +49,6 @@ def calculate_price(items):
 
 
 items = "dababa"
-item_prices = {"a": 50, "b": 30, "c": 20, "d": 15}
+item_prices = {"A": 50, "B": 30, "C": 20, "D": 15}
 
 print(calculate_price(items), "TOTAL COST")
