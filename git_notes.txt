@@ -4,5 +4,6 @@ TO LINK A LOCAL PROJECT FOLDER TO A GIT REPO
 -> Add the changed files by "git add". 
 -> Commit the changes 
 -> Create a remote repository on github.com 
--> Copy the SSH for the remote git repo and use it in the following command "get remote set-url origin ** SSH FOR THE REMOTE REPO **.
+-> Copy the SSH for the remote git repo and use it in the following command "git remote add origin <remote-repository-URL>  # Sets the new remote
+->  git remote -v   # Verifies the new remote URL ** SSH FOR THE REMOTE REPO **.
 -> Then push the changes byt usin "git push -f origin master" 
