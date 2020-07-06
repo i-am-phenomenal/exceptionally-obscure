@@ -1,0 +1,95 @@
+XRAY NOTES 
+
+-> Xray for jira is a complete and Atlassian verfied test management add on for Jira. 
+-> It supports manual and automated tests and complete testing life cycle i.e. test planning, test designing and test execution
+-> It makes use of Jira isues for test management, allowing to customize screens and workflows
+-> We can also import test definitions from Excel (CSV) for both manual and automated tests
+
+
+Advantages of using Jira issue types in Test Management
+Xray's Test, Precondition, Test Set, (Sub) Test Execution and Test Plan are all Jira issue types. That means that testing artifacts are also managed in the same way as any other issue type you may have (e.g. Bug, Story).
+
+
+INSTALLATION 
+2 methods 
+    -> Navigation throught UI, settings -> Apps -> <Search for Xray> -> Install (Only Admins can install Add ons)
+    -> Token based installation
+
+GRAPHQL API 
+    -> Xray provides a graphQL API that allows users to perform CRUD operations on XRAY Entities. 
+    -> GraphQL gives clients the power to ask for exactly what they want and no unnecessary data is returned. 
+    -> The GraphQL API url is http://xray.cloud.xpand-it.com/api/v1/graphql
+
+    Requests made to the above said url need to be authenticated by making a POST request at the given url with necessary credentials.
+
+    URL for Authentication -> http://xray.cloud.xpand-it.com/api/v1/authenticate
+    Body of the request -> {
+        "client_id": <Some Value>,
+        "client_secret": <Some Value>
+    }
+    Headers -> {
+        "Content-Type": "application/json" 
+    }
+
+    Method: POST
+
+    If the above credentials and request is succesfull, it will give us a JSON Web Token or JWT which we can use in subsequent requests.
+
+TESTING IN JIRA AND HOW XRAY IS RELATED 
+Daily testing activities are focused on 2 tasks, 
+    1) Writing/specifying tests and 
+    2) Organizing them in lists using Test Sets or using the Test Repositories if we prefer to use the folders 
+
+Whenever we create tests, we will also associate each test to the requirement
+
+Tests can be organized in 2 ways, 
+-> In flat lists called Test Sets 
+-> another way is to have a hierarchical organization of Tests at the project level by allowing us to organize tests in folder.
+    This is called a test repository.
+
+TEST SETS 
+A test set is a collection of tests. It contains details like 
+    -> Detailed instructions or goals about the test
+    -> Informationon the configuration to be used during testing
+
+It is just a simple flat list which can be used as a basis for creating Test Executions or Test Plans. 
+Since, Tests are supposed to be grouped in a logical way (example, all the recursion tests are supposed to be a part of 1 group), so a test can be a part of different Test Sets
+
+HOW TO CREATE A TEST SET 
+    We can create a test set just like any other Jira ticket
+    Create (button) -> Create Ticket Modal will open -> In the dropdown for Issue Type Select Test set -> Enter Other Information -> Create
+
+ACTIONS WE CAN PERFORM IN A TEST SET 
+    -> Create
+    -> Edit
+    -> Clone 
+    -> Configure Test Columns 
+            -> Restoring columns to default COnfiguration 
+            -> Change Columns Order 
+    -> Add Tests 
+            -> From the test set issue view screen 
+            -> From test issue view screen 
+            -> From create test screen 
+    -> Remove Tests
+            -> From the test set issue view screen 
+            -> From test issue view screen 
+    -> Reorder Tests 
+            -> Drag and Drop 
+            -> Change Rank Action
+    -> Bulk Operations
+
+TEST REPOSITORIES 
+    It is a hierarchical way of arranging tests by putting them in folders. 
+    NOTE: Test repositories in xray are at project level. 
+
+PROS FOR TEST REPOSITORIES 
+    -> Hierarchical concept, similar to computer file systems, may be easier to understand.
+    -> Can operate along side an existing Test set 
+
+CONS FOR TEST REPOSITORIES 
+    -> A Test can only be in one folder so it cannot be categorized in multiple ways.
+    -> A folder cannot be used as a way to cover requirements. However, Test sets can be used to do so. 
+    -> Test Sets can also be used as a dynamic way to cover requirements. Test repositories cant be used for this. 
+
+NOTE: Both the approaches have their pros and cons. they can also work in a complementary way. 
+            If used properly, we can use Test Sets to cover complex requirements and using the Test Repository to organize the Tests
