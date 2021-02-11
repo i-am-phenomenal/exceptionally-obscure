@@ -1,0 +1,44 @@
+{
+    "workbench.colorTheme": "Bear Theme",
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.editorAssociations": [
+        
+    ],
+    "editor.fontFamily": "Comic Sans MS",  
+    "workbench.colorCustomizations": {
+        "editor.background": "#000000",
+        "activityBar.background": "#000000",
+        "activityBar.activeBackground": "#000000",
+        "sideBar.background": "#000000",
+        "minimap.background": "#000000",
+        "editorGroup.border": "#000000",
+        "editorPane.background": "#000000",
+        "editorWidget.background": "#000000",
+        "panel.background": "#000000", 
+        "menu.background": "#000000",
+        "window.activeBorder": "#000000",
+        "focusBorder": "#000000",
+        "tab.activeBackground": "#000000",
+        "tab.inactiveBackground": "#000000",
+        "editorGroup.emptyBackground": "#000000" ,
+        "tab.border": "#88ff00af",
+        "editorLineNumber.background": "#000000",
+    },
+    "editor.tokenColorCustomizations": {
+        "variables": "#88ff00af",
+        "functions": "#88ff00af",
+        "keywords": "#88ff00af",
+        "numbers": "#88ff00af", 
+        "strings": "#88ff00af",
+        "types": "#88ff00af",
+        "comments": "#c300ffbe"
+    },
+    "name": "Function call",
+    "scope": "meta.function-call.generic, meta.function-call.object, meta.function-call.static",
+    "settings": {
+        "foreground": "#c300ffbe"
+    },
+    "editor.fontLigatures": null,
+    "window.zoomLevel": 1,
+    
+}
