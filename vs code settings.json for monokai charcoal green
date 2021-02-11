@@ -1,0 +1,24 @@
+{
+    "workbench.colorTheme": "monokai-charcoal (green)",
+    "workbench.iconTheme": "vscode-icons",
+    "workbench.editorAssociations": [
+        
+    ],
+    "workbench.colorCustomizations": {
+    },
+    "editor.tokenColorCustomizations": {
+        "variables": "#88ff00af",
+        "functions": "#88ff00af",
+        "keywords": "#88ff00af",
+        "numbers": "#88ff00af", 
+        "strings": "#88ff00af",
+        "types": "#88ff00af",
+        "comments": "#c300ffbe"
+    },
+    "name": "Function call",
+    "scope": "meta.function-call.generic, meta.function-call.object, meta.function-call.static",
+    "settings": {
+        "foreground": "#c300ffbe"
+    },
+    "window.zoomLevel": 1
+}
